@@ -1,28 +1,46 @@
 /**
  * Copyright 2015 IBM Corp. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 'use strict';
+
+require('dotenv').config({silent: true});
 
 var express = require('express'); // app server
 var bodyParser = require('body-parser'); // parser for post requests
 var watson = require('watson-developer-cloud');
 
-var toneDetection = require('./addons/tone_detection.js'); // required for tone
-                                                            // detection
+/** **** TONE INTEGRATION ******/
+var toneDetection = require('./addons/tone_detection.js'); // required for tone detection
 var maintainToneHistory = false;
+
+/** PERSONALITY INTEGRATION **/
+var personalityInsightsHelper = require('./addons/personality-insights-helper');
+var twitterHelper = require('./addons/twitter-helper');
+
+var personalityInsights = new watson.PersonalityInsightsV2({
+  version_date: '2016-08-31'
+});
+
+/** TEXT TO SPEECH INTEGRATION **/
+var textToSpeech = watson.text_to_speech({
+  version: 'v1',
+username: '76a57977-7fba-417a-aef5-54ae057e43e9',
+password: 'JeIeQGNcNHXY',
+  url: 'https://stream.watsonplatform.net/text-to-speech/api',
+});
 
 // The following requires are needed for logging purposes
 var uuid = require('uuid');
@@ -46,20 +64,14 @@ var app = express();
 app.use(express.static('./public')); // load UI from public folder
 app.use(bodyParser.json());
 
+/**
+ * Instantiate the Watson Conversation Service as per WDC 2.2.0
+ */
+var conversation = new watson.ConversationV1({version_date: '2016-07-11'});
 
-// Instantiate the Watson Conversation Service as per WDC 2.2.0
-var conversation = new watson.ConversationV1({
-  version_date: '2016-09-20',
-  username: process.env.CONVERSATION_USERNAME || '<username>',
-  password: process.env.CONVERSATION_PASSWORD || '<password>'
-});
-
+/** **** TONE INTEGRATION ******/
 // Instantiate the Watson Tone Analyzer Service as per WDC 2.2.0
-var toneAnalyzer = new watson.ToneAnalyzerV3({
-  version_date: '2016-05-19',
-  username: process.env.TONE_ANALYZER_USERNAME || '<username>',
-  password: process.env.TONE_ANALYZER_PASSWORD || '<password>'
-});
+var toneAnalyzer = new watson.ToneAnalyzerV3({version_date: '2016-05-19'});
 
 // Endpoint to be called from the client side
 app.post('/api/message', function(req, res) {
@@ -84,26 +96,23 @@ app.post('/api/message', function(req, res) {
     if (req.body.context) {
       payload.context = req.body.context;
     } else {
-
-      // Add the user object (containing tone) to the context object for
-      // Conversation
+      /** **** TONE INTEGRATION ******/
+      // Add the user object (containing tone) to the context object for Conversation
       payload.context = toneDetection.initUser();
     }
 
-
+    /** **** TONE INTEGRATION ******/
     // Invoke the tone-aware call to the Conversation Service
-    invokeToneConversation(payload, res);
+    //invokeToneConversation(payload, res);
+    invokePersonalizedConversation(payload, res);
   }
 });
 
 /**
  * Updates the response text using the intent confidence
- *
- * @param {Object}
- *                input The request to the Conversation service
- * @param {Object}
- *                response The response from the Conversation service
- * @return {Object} The response with the updated message
+ * @param  {Object} input The request to the Conversation service
+ * @param  {Object} response The response from the Conversation service
+ * @return {Object}          The response with the updated message
  */
 function updateMessage(input, response) {
   var responseText = null;
@@ -117,21 +126,17 @@ function updateMessage(input, response) {
       id = uuid.v4();
       logs.insert({'_id': id, 'request': input, 'response': response, 'time': new Date()});
     }
+
     return response;
   }
 
   if (response.intents && response.intents[0]) {
     var intent = response.intents[0];
-    // Depending on the confidence of the response the app can return different
-    // messages.
-    // The confidence will vary depending on how well the system is trained. The
-    // service will always try to assign
-    // a class/intent to the input. If the confidence is low, then it suggests
-    // the service is unsure of the
-    // user's intent . In these cases it is usually best to return a
-    // disambiguation message
-    // ('I did not understand your intent, please rephrase your question',
-    // etc..)
+    // Depending on the confidence of the response the app can return different messages.
+    // The confidence will vary depending on how well the system is trained. The service will always try to assign
+    // a class/intent to the input. If the confidence is low, then it suggests the service is unsure of the
+    // user's intent . In these cases it is usually best to return a disambiguation message
+    // ('I did not understand your intent, please rephrase your question', etc..)
     if (intent.confidence >= 0.75) {
       responseText = 'I understood your intent was ' + intent.intent;
     } else if (intent.confidence >= 0.5) {
@@ -152,16 +157,12 @@ function updateMessage(input, response) {
 /**
  * @author April Webster
  * @returns {Object} return response from conversation service
- *          invokeToneConversation calls the invokeToneAsync function to get the
- *          tone information for the user's input text (input.text in the
- *          payload json object), adds/updates the user's tone in the payload's
- *          context, and sends the payload to the conversation service to get a
- *          response which is printed to screen.
- * @param {Json}
- *                payload a json object containing the basic information needed
- *                to converse with the Conversation Service's message endpoint.
- * @param {Object}
- *                res response object
+ * invokeToneConversation calls the invokeToneAsync function to get the tone information for the user's
+ * input text (input.text in the payload json object), adds/updates the user's tone in the payload's context,
+ * and sends the payload to the conversation service to get a response which is printed to screen.
+ * @param {Json} payload a json object containing the basic information needed to converse with the Conversation Service's
+ *        message endpoint.
+ * @param {Object} res response object
  *
  */
 function invokeToneConversation(payload, res) {
@@ -182,25 +183,53 @@ function invokeToneConversation(payload, res) {
   });
 }
 
+function invokePersonalizedConversation(conversationRequestPayload, res) {
+   if( conversationRequestPayload.context.getPersonality == "true" && conversationRequestPayload.input.text.startsWith("@")){
+        conversationRequestPayload.context.getPersonality = "false";
+        // Add personality to the user object of the Watson Conversation context object, if the user has provided a twitter handle
+        // and there isn't yet a personality object in the user object
+          twitterHelper.getTweetsAsync({screen_name: conversationRequestPayload.input.text, count: 20}) 
+          .then( (tweets) => {
+              personalityInsights.profile(
+                  {'contentItems': twitterHelper.getContentItems(tweets)},
+                  function(err, profile) {
+                    if (err) {
+			invokeToneConversation(conversationRequestPayload, res);
+                    } else {
+                      var updatedPayload = personalityInsightsHelper.setUserPersonality(conversationRequestPayload, profile);
+		      invokeToneConversation(updatedPayload, res);
+                    }
+                  }
+              );
+  }).catch(function(err) {
+     conversationRequestPayload.context.getPersonality = "false";
+     invokeToneConversation(conversationRequestPayload, res); 
+   });
+   }
+   else 
+   { 
+     conversationRequestPayload.context.getPersonality = "false";
+     invokeToneConversation(conversationRequestPayload, res); 
+   }
+
+}
+
 /**
- * Enable logging Must add an instance of the Cloudant NoSQL DB to the
- * application in BlueMix and add the Cloudant credentials to the application's
- * user-defined Environment Variables.
+ * Enable logging
+ * Must add an instance of the Cloudant NoSQL DB to the application in BlueMix and add
+ * the Cloudant credentials to the application's user-defined Environment Variables.
  */
 if (cloudantUrl) {
-  // If logging has been enabled (as signalled by the presence of the
-  // cloudantUrl) then the
+  // If logging has been enabled (as signalled by the presence of the cloudantUrl) then the
   // app developer must also specify a LOG_USER and LOG_PASS env vars.
   if (!process.env.LOG_USER || !process.env.LOG_PASS) {
     throw new Error('LOG_USER OR LOG_PASS not defined, both required to enable logging!');
   }
   // add basic auth to the endpoints to retrieve the logs!
   var auth = basicAuth(process.env.LOG_USER, process.env.LOG_PASS);
-  // If the cloudantUrl has been configured then we will want to set up a nano
-  // client
+  // If the cloudantUrl has been configured then we will want to set up a nano client
   var nano = require('nano')(cloudantUrl);
-  // add a new API which allows us to retrieve the logs (note this is not
-  // secure)
+  // add a new API which allows us to retrieve the logs (note this is not secure)
   nano.db.get('food_coach', function(err) {
     if (err) {
       console.error(err);
@@ -222,6 +251,19 @@ if (cloudantUrl) {
     });
     return res.json({'message': 'Clearing db'});
   });
+
+app.get('/api/synthesize', function(req, res, next) {
+  var transcript = textToSpeech.synthesize(req.query);
+  transcript.on('response', function(response) {
+    if (req.query.download) {
+      response.headers['content-disposition'] = 'attachment; filename=transcript.ogg';
+    }
+  });
+  transcript.on('error', function(error) {
+    next(error);
+  });
+  transcript.pipe(res);
+});
 
   // Endpoint which allows conversation logs to be fetched
   // csv - user input, conversation_id, timestamp
@@ -315,5 +357,6 @@ if (cloudantUrl) {
     });
   });
 }
+
 
 module.exports = app;

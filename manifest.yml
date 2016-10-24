@@ -6,8 +6,14 @@ declared-services:
   tone-analyzer-standard:
     label: tone_analyzer
     plan: standard
+  personality-insights-service-standard:
+   label: personality-insights
+   plan: standard
+  speech-to-text-service:
+    label: speech_to_text
+    plan: standard
 applications:
-- name: food-coach
+- name: food-coach-with-addons
   command: npm start
   path: .
   instances: 1
@@ -15,6 +21,8 @@ applications:
   services:
   - conversation-service
   - tone-analyzer-standard
+  - personality-insights-service-standard
+  - speech-to-text-service
   env:
     NPM_CONFIG_PRODUCTION: false
 

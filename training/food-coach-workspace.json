@@ -1,5 +1,5 @@
 {
-	"name": "food-coach-workspace",
+	"name": "food-coach-workspace-with-tone-personality",
 	"created": "2016-10-06T20:12:30.709Z",
 	"intents": [{
 		"intent": "help",
@@ -212,9 +212,11 @@
 		}],
 		"description": null
 	}],
-	"updated": "2016-10-06T23:14:22.578Z",
+	"updated": "2016-10-24T04:32:26.901Z",
 	"entities": [{
+		"type": null,
 		"entity": "food",
+		"source": null,
 		"values": [{
 			"value": "7-up",
 			"created": "2016-10-06T20:12:30.709Z",
@@ -20001,11 +20003,21 @@
 			"metadata": null,
 			"synonyms": []
 		}],
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-06T20:12:30.709192",
 		"open_list": false,
 		"description": null
 	}, {
+		"type": null,
+		"entity": "true",
+		"source": null,
+		"values": [],
+		"created": "2016-10-24T01:49:15.718121",
+		"open_list": false,
+		"description": null
+	}, {
+		"type": null,
 		"entity": "unhealthy_food",
+		"source": null,
 		"values": [{
 			"value": "bacon",
 			"created": "2016-10-06T20:12:30.709Z",
@@ -20112,7 +20124,7 @@
 			"metadata": null,
 			"synonyms": []
 		}],
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-06T20:12:30.709192",
 		"open_list": false,
 		"description": null
 	}],
@@ -20120,17 +20132,6 @@
 	"metadata": null,
 	"description": "A conversation coach for meal monitoring - ensure one eats regularly (meals, snacks), and makes healthy choices.",
 	"dialog_nodes": [{
-		"go_to": null,
-		"output": null,
-		"parent": "node_5_1470248758090",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": null,
-		"description": null,
-		"dialog_node": "node_1_1472662842845",
-		"previous_sibling": null
-	}, {
 		"go_to": null,
 		"output": {
 			"text": "Can you tell me about what you ate today?"
@@ -20150,12 +20151,12 @@
 		},
 		"parent": null,
 		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-23T20:18:58.506Z",
 		"metadata": null,
-		"conditions": "conversation_start",
+		"conditions": "start",
 		"description": null,
-		"dialog_node": "node_5_1470248758090",
-		"previous_sibling": null
+		"dialog_node": "node_1_1477253939884",
+		"previous_sibling": "node_5_1470248758090"
 	}, {
 		"go_to": null,
 		"output": {
@@ -20172,7 +20173,7 @@
 	}, {
 		"go_to": null,
 		"output": {
-			"text": "Here is a good resource on healthy vs unhealthy food <a  target=\"_blank\" href= \"https://www.choosemyplate.gov\">Food and nutrition Guide</a>.\n<br/><br/>Talk to you later, bye for now!<br/><br/><a href=\"#\" onclick=\"window.location.reload(true);\">Click here to start again.</a>"
+			"text": "Here is a good resource on healthy vs unhealthy food <a  target=\"_blank\" href= \"https://www.choosemyplate.gov/\">Food and nutrition Guide</a>.\n<br/><br/>Talk to you later, bye for now!<br/><br/><a href=\"#\" onclick=\"window.location.reload(true);\">Click here to start again.</a>"
 		},
 		"parent": null,
 		"context": {
@@ -20187,20 +20188,48 @@
 	}, {
 		"go_to": null,
 		"output": {
-			"text": "Hmm...@unhealthy_food.  How do you feel about what you ate?"
+			"text": "<i class=\"em em-heart\"></i> You’re worth taking care of. Let’s try harder tomorrow to make sure you live a long, happy life."
+		},
+		"parent": "node_7_1472512341593",
+		"context": null,
+		"created": "2016-10-24T01:48:52.705Z",
+		"metadata": null,
+		"conditions": "true",
+		"description": null,
+		"dialog_node": "node_8_1477273732428",
+		"previous_sibling": "node_10_1472590827713"
+	}, {
+		"go_to": null,
+		"output": {
+			"text": "Please enter your twitter handle (e.g., @adele) for a more personalized experience.  If you prefer not to share your twitter handle, please respond with 'no'."
+		},
+		"parent": null,
+		"context": {
+			"getPersonality": "true"
+		},
+		"created": "2016-10-06T20:12:30.709Z",
+		"metadata": null,
+		"conditions": "conversation_start",
+		"description": null,
+		"dialog_node": "node_5_1470248758090",
+		"previous_sibling": null
+	}, {
+		"go_to": null,
+		"output": {
+			"text": "<speak><express-as type=\"Apology\">Oh  dear.  How do you feel about skipping meals </express-as></speak>"
 		},
 		"parent": null,
 		"context": null,
 		"created": "2016-10-06T20:12:30.709Z",
 		"metadata": null,
-		"conditions": "#yes && @unhealthy_food && intents[0].confidence > 0.7",
+		"conditions": "#no && intents[0].confidence > 0.7",
 		"description": null,
-		"dialog_node": "node_3_1472665334598",
-		"previous_sibling": "node_2_1472240789937"
+		"dialog_node": "node_9_1471394498445",
+		"previous_sibling": "node_16_1471462209846"
 	}, {
 		"go_to": null,
 		"output": {
-			"text": "Hmm...@unhealthy_food.  How do you feel about what you ate?"
+			"text": "<speak><express-as type=\"Uncertainty\">Hmm...@unhealthy_food.  How do you feel about what you ate?</express-as></speak>"
 		},
 		"parent": "node_16_1471462209846",
 		"context": null,
@@ -20211,36 +20240,60 @@
 		"dialog_node": "node_7_1472512341593",
 		"previous_sibling": "node_7_1472246971400"
 	}, {
-		"go_to": null,
+		"go_to": {
+			"return": null,
+			"selector": "body",
+			"dialog_node": "node_1_1477253939884"
+		},
 		"output": {
-			"text": "Nothing in your meal shows up on my list of unhealthy foods.  How do you feel about what you ate?"
+			"text": "No problem!  We can continue without your personality information."
 		},
-		"parent": null,
-		"context": {
-			"meal": {
-				"food": "<?entities.get('food')?>",
-				"type": "$time"
-			}
-		},
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "#yes && @food && intents[0].confidence > 0.7",
-		"description": null,
-		"dialog_node": "node_2_1471562391421",
-		"previous_sibling": "node_3_1472665334598"
-	}, {
-		"go_to": null,
-		"output": {
-			"text": "Oh dear.  How do you feel about skipping meals?"
-		},
-		"parent": null,
+		"parent": "node_5_1470248758090",
 		"context": null,
 		"created": "2016-10-06T20:12:30.709Z",
 		"metadata": null,
-		"conditions": "#no && intents[0].confidence > 0.7",
+		"conditions": "#no",
 		"description": null,
-		"dialog_node": "node_9_1471394498445",
-		"previous_sibling": "node_16_1471462209846"
+		"dialog_node": "node_1_1472662842845",
+		"previous_sibling": null
+	}, {
+		"go_to": {
+			"return": null,
+			"selector": "body",
+			"dialog_node": "node_1_1477253939884"
+		},
+		"output": {
+			"text": "Thank you for providing your twitter handle, <?input_text?>. However, either it is not a valid handle, or you do not have enough tweets for me to get your preferences."
+		},
+		"parent": "node_5_1470248758090",
+		"context": null,
+		"created": "2016-10-24T03:13:41.413Z",
+		"metadata": null,
+		"conditions": "true",
+		"description": null,
+		"dialog_node": "node_1_1477278821284",
+		"previous_sibling": "node_2_1477254090565"
+	}, {
+		"go_to": {
+			"return": null,
+			"selector": "body",
+			"dialog_node": "node_1_1477253939884"
+		},
+		"output": {
+			"text": "Thank you for providing your twitter handle, <?input_text?>. We have been able to infer your eating preferences."
+		},
+		"parent": "node_5_1470248758090",
+		"context": {
+			"user": {
+				"twitter_handle": "<?input_text?>"
+			}
+		},
+		"created": "2016-10-23T20:21:29.088Z",
+		"metadata": null,
+		"conditions": "$user.personality",
+		"description": null,
+		"dialog_node": "node_2_1477254090565",
+		"previous_sibling": "node_1_1472662842845"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20298,6 +20351,26 @@
 			"selector": "body",
 			"dialog_node": "node_17_1472591903720"
 		},
+		"output": {},
+		"parent": null,
+		"context": {
+			"meal": {
+				"food": "<?entities.get('food')?>",
+				"type": "$time"
+			}
+		},
+		"created": "2016-10-06T20:12:30.709Z",
+		"metadata": null,
+		"conditions": "#yes && @food && intents[0].confidence > 0.7",
+		"description": null,
+		"dialog_node": "node_2_1471562391421",
+		"previous_sibling": "node_2_1477282980990"
+	}, {
+		"go_to": {
+			"return": null,
+			"selector": "body",
+			"dialog_node": "node_17_1472591903720"
+		},
 		"output": {
 			"text": "Try one of the following:\n<ul>\n<li>Satisfied !</li>\n<li>Somewhat guilty :(</li>\n<li>Are you kidding me, this is not healthy !!!</li>\n</ul>"
 		},
@@ -20316,13 +20389,13 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "<i class=\"em em-dart\"></i> Hey now, I know it’s hard to resist treats, but I’m here to support you, remember? Put down the burger and pick up the grilled chicken next time, you can do this!"
+			"text": "<i class=\"em em-dart\"></i> Hey now, I know it’s hard to resist treats, but I’m here to support you, remember? Try to eat healthy, you can do this!"
 		},
 		"parent": "node_7_1472512341593",
 		"context": null,
 		"created": "2016-10-06T20:12:30.709Z",
 		"metadata": null,
-		"conditions": "true",
+		"conditions": "($user.personality and $user.personality.likely_to_eat_unhealthy == \"true\")",
 		"description": null,
 		"dialog_node": "node_10_1472590827713",
 		"previous_sibling": "node_9_1472590769657"
@@ -20333,16 +20406,16 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "<i class=\"em em-heart\"></i> You’re worth taking care of. Let’s try harder tomorrow to make sure you live a long, happy life."
+			"text": "<i class=\"em em-heart\"></i> You’re worth taking care of. Indulging once a while is ok. Eat healthy, treat yourself once in a while, and you will live a long, happy life."
 		},
-		"parent": "node_3_1472665334598",
+		"parent": "node_7_1472512341593",
 		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-24T02:26:13.837Z",
 		"metadata": null,
-		"conditions": "true",
+		"conditions": "($user.personality and $user.personality.likely_to_eat_healthy == \"true\")",
 		"description": null,
-		"dialog_node": "node_6_1472665533113",
-		"previous_sibling": "node_5_1472665413763"
+		"dialog_node": "node_11_1477275971273",
+		"previous_sibling": "node_10_1477275910181"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20384,16 +20457,16 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-angel\"></i> Don't worry, indulging from time to time is okay – especially if it brings you joy! It's only a problem when we make a habit of it. Don't let it put you off track for the rest of the day!"
+			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-angel\"></i> Don't worry, indulging from time to time is okay. It's only a problem when we make a habit of it, and I do not think you do that! Don't let it put you off track for the rest of the day!"
 		},
-		"parent": "node_3_1472665334598",
+		"parent": "node_7_1472512341593",
 		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-24T02:25:10.340Z",
 		"metadata": null,
-		"conditions": "$user.tone.emotion.current == \"anger\" || $user.tone.emotion.current == \"sadness\" || $user.tone.emotion.current == \"fear\" || $user.tone.emotion.current == \"disgust\"",
+		"conditions": "($user.tone.emotion.current == \"anger\" or $user.tone.emotion.current == \"disgust\" or $user.tone.emotion.current == \"sadness\" or $user.tone.emotion.current == \"fear\") || $user.tone.emotion.current == \"fear\" && ($user.personality and $user.personality.likely_to_eat_healthy == \"true\")",
 		"description": null,
-		"dialog_node": "node_5_1472665413763",
-		"previous_sibling": "node_4_1472665366645"
+		"dialog_node": "node_10_1477275910181",
+		"previous_sibling": "node_9_1477275843959"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20407,44 +20480,10 @@
 		"context": null,
 		"created": "2016-10-06T20:12:30.709Z",
 		"metadata": null,
-		"conditions": "$user.tone.emotion.current == \"sadness\" || $user.tone.emotion.current == \"anger\" || $user.tone.emotion.current == \"disgust\" || $user.tone.emotion.current == \"fear\"",
+		"conditions": "($user.tone.emotion.current == \"sadness\" or $user.tone.emotion.current == \"disgust\" or $user.tone.emotion.current == \"fear\" or $user.tone.emotion.current == \"anger\")",
 		"description": null,
 		"dialog_node": "node_9_1472590769657",
 		"previous_sibling": "node_8_1472590746914"
-	}, {
-		"go_to": {
-			"return": null,
-			"selector": "body",
-			"dialog_node": "node_2_1471557599743"
-		},
-		"output": {
-			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-apple\"></i> I'm sorry you didn’t enjoy that last meal. Let’s find something tasty next time."
-		},
-		"parent": "node_2_1471562391421",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "$user.tone.emotion.current == \"sadness\" || $user.tone.emotion.current == \"anger\" || $user.tone.emotion.current == \"fear\" || $user.tone.emotion.current == \"disgust\"",
-		"description": null,
-		"dialog_node": "node_26_1472062571307",
-		"previous_sibling": "node_24_1472062523020"
-	}, {
-		"go_to": {
-			"return": null,
-			"selector": "body",
-			"dialog_node": "node_2_1471557599743"
-		},
-		"output": {
-			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-fork_and_knife\"></i> It can seem like a plus to skip meals, but your body actually holds onto calories longer when it’s not sure when your next meal is coming. The more regularly you eat the right portions, the faster you’ll see results."
-		},
-		"parent": "node_9_1471394498445",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "$user.tone.emotion.current == \"joy\"",
-		"description": null,
-		"dialog_node": "node_9_1471995740654",
-		"previous_sibling": "node_9_1472247409386"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20461,7 +20500,7 @@
 		"conditions": "$user.tone.emotion.current == \"joy\"",
 		"description": null,
 		"dialog_node": "node_8_1472590746914",
-		"previous_sibling": "node_12_1472590948716"
+		"previous_sibling": "node_11_1477275971273"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20469,16 +20508,16 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-smirk\"></i> Hope you enjoyed the treat! Sometimes it’s better to cure cravings with a taste of what you want. Good health and happiness is all about balance and moderation."
+			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-tada\"></i> Hope you enjoyed the treat! Sometimes it’s better to cure cravings with a taste of what you want. Good health and happiness is all about balance and moderation."
 		},
-		"parent": "node_3_1472665334598",
+		"parent": "node_7_1472512341593",
 		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
+		"created": "2016-10-24T02:24:04.167Z",
 		"metadata": null,
-		"conditions": "$user.tone.emotion.current == \"joy\"",
+		"conditions": "$user.tone.emotion.current == \"joy\" && ($user.personality and $user.personality.likely_to_eat_healthy == \"true\")",
 		"description": null,
-		"dialog_node": "node_4_1472665366645",
-		"previous_sibling": "node_7_1472665570766"
+		"dialog_node": "node_9_1477275843959",
+		"previous_sibling": "node_12_1472590948716"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20520,16 +20559,16 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "<i>I detected $user.tone.emotion.current</i><br/><br/><i class=\"em em-trophy\"></i> Great job, keep at it!"
+			"text": "<voice-transformation type=\"Custom\" glottal_tension=\"-40%\"><i class=\"em em-fork_and_knife\"></i> It can seem like a plus to skip meals, but your body actually holds onto calories longer when it’s not sure when your next meal is coming. The more regularly you eat the right portions, the faster you’ll see results.</voice-transformation>"
 		},
-		"parent": "node_2_1471562391421",
+		"parent": "node_9_1471394498445",
 		"context": null,
 		"created": "2016-10-06T20:12:30.709Z",
 		"metadata": null,
 		"conditions": "$user.tone.emotion.current == \"joy\"",
 		"description": null,
-		"dialog_node": "node_24_1472062523020",
-		"previous_sibling": "node_5_1472246896142"
+		"dialog_node": "node_9_1471995740654",
+		"previous_sibling": "node_9_1472247409386"
 	}, {
 		"go_to": {
 			"return": null,
@@ -20537,7 +20576,7 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "I know it’s tough, but you have lots to be proud of.  You're making great food choices, keep up the good work and you’ll see results soon! <i class=\"em em-wave\"></i>"
+			"text": "You seem relatively neutral about your choices.  You're doing a good job, keep it up! <i class=\"em em---1\"></i>"
 		},
 		"parent": "node_17_1472591903720",
 		"context": null,
@@ -20554,25 +20593,8 @@
 			"dialog_node": "node_2_1471557599743"
 		},
 		"output": {
-			"text": "You seem relatively neutral about your choices.  You're doing a good job, keep it up! <i class=\"em em---1\"></i>"
-		},
-		"parent": "node_2_1471562391421",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "true",
-		"description": null,
-		"dialog_node": "node_28_1472062677862",
-		"previous_sibling": "node_26_1472062571307"
-	}, {
-		"go_to": {
-			"return": null,
-			"selector": "body",
-			"dialog_node": "node_2_1471557599743"
-		},
-		"output": {
 			"text": {
-				"values": ["<i class='em em-checkered_flag'></i> Did you forget to eat $time today? Remember to take care of yourself by grabbing something healthy to eat as soon as you can!", "<i class='em em-balloon'></i> When humans don’t give their bodies fuel every 3-6 hours, their blood sugar can drop, making them feel tired and cranky. Let’s keep your spirits and your energy up today - remember to make time for a healthy snack soon!", "<i class='em em-dart'></i> Nutrition time! Pick a snack that’ll make me proud!", "<i class='em em-rocket’></i> (Psst - skipping meals can lead to an emergency fast food splurge when you realize you’re starving! Let’s take care of future you - grab a snack your body will appreciate ASAP.)"],
+				"values": ["<i class='em em-checkered_flag'></i> Remember to take care of yourself by grabbing something healthy to eat as soon as you can!", "<i class='em em-balloon'></i> When humans don’t give their bodies fuel every 3-6 hours, their blood sugar can drop, making them feel tired and cranky. Let’s keep your spirits and your energy up today - remember to make time for a healthy snack soon!", "<i class='em em-dart'></i> Nutrition time! Pick a snack that’ll make me proud!", "<i class='em em-rocket’></i> (Psst - skipping meals can lead to an emergency fast food splurge when you realize you’re starving! Let’s take care of future you - grab a snack your body will appreciate ASAP.)"],
 				"selection_policy": "random"
 			}
 		},
@@ -20584,23 +20606,6 @@
 		"description": null,
 		"dialog_node": "node_11_1471995753947",
 		"previous_sibling": "node_10_1471995750417"
-	}, {
-		"go_to": {
-			"return": null,
-			"selector": "body",
-			"dialog_node": "node_2_1471562391421"
-		},
-		"output": {
-			"text": "Try one of the following:\n<ul>\n<li>Satisfied!</li>\n<li>Somewhat guilty</li>\n<li>Are you kidding me, this isn't healthy!!!</li>\n</ul>"
-		},
-		"parent": "node_2_1471562391421",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "#help && intents[0].confidence > 0.7",
-		"description": null,
-		"dialog_node": "node_5_1472246896142",
-		"previous_sibling": null
 	}, {
 		"go_to": {
 			"return": null,
@@ -20622,23 +20627,6 @@
 		"go_to": {
 			"return": null,
 			"selector": "body",
-			"dialog_node": "node_3_1472665334598"
-		},
-		"output": {
-			"text": "Try one of the following:\n<ul>\n<li> Guilty <i class=\"em em-smiley\"></i></li>\n<li> Not good at all</li>\n<li> Terrible!</li>\n<li>I'm afraid I'm going to become bloated. I never stick to my diet plans. <i class=\"em em-frowning\"></i></li>\n<li>Frustrated that I'm not able to resist temptation!</li>\n</ul>"
-		},
-		"parent": "node_3_1472665334598",
-		"context": null,
-		"created": "2016-10-06T20:12:30.709Z",
-		"metadata": null,
-		"conditions": "#help && intents[0].confidence > 0.7",
-		"description": null,
-		"dialog_node": "node_7_1472665570766",
-		"previous_sibling": null
-	}, {
-		"go_to": {
-			"return": null,
-			"selector": "body",
 			"dialog_node": "node_5_1470248758090"
 		},
 		"output": {
@@ -20651,7 +20639,22 @@
 		"conditions": "#help && intents[0].confidence > 0.7",
 		"description": null,
 		"dialog_node": "node_2_1472240789937",
-		"previous_sibling": "node_5_1470248758090"
+		"previous_sibling": "node_1_1477253939884"
+	}, {
+		"go_to": {
+			"return": null,
+			"selector": "body",
+			"dialog_node": "node_7_1472512341593"
+		},
+		"output": {},
+		"parent": null,
+		"context": null,
+		"created": "2016-10-24T04:23:01.794Z",
+		"metadata": null,
+		"conditions": "#yes && @unhealthy_food && intents[0].confidence > 0.7",
+		"description": null,
+		"dialog_node": "node_2_1477282980990",
+		"previous_sibling": "node_2_1472240789937"
 	}, {
 		"go_to": {
 			"return": null,
