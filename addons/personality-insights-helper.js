@@ -102,8 +102,8 @@ function setUserPersonality(conversationPayload, personalityInsightsPayload) {
   conversationPayload.context.user.personality.immoderation = immoderation.percentage;
   conversationPayload.context.user.personality.self_discipline = self_discipline.percentage;
 
-  if(neuroticism.percentage > 0.75 || immoderation.percentage > 0.75 || self_discipline.percentage < 0.25) conversationPayload.context.user.personality.likely_to_eat_unhealthy = "true";
-  if(conscientiousness.percentage > 0.75 || dutifulness.percentage > 0.75 || self_discipline.percentage > 0.75) conversationPayload.context.user.personality.likely_to_eat_healthy = "true";
+  if((neuroticism.percentage > 0.25 ) && (immoderation.percentage > 0.75 || self_discipline.percentage < 0.25)) conversationPayload.context.user.personality.likely_to_eat_unhealthy = "true";
+  if((conscientiousness.percentage > 0.25 ) && (immoderation.percentage < 0.25 || dutifulness.percentage > 0.75 || self_discipline.percentage > 0.75)) conversationPayload.context.user.personality.likely_to_eat_healthy = "true";
 
   return conversationPayload;
 }
