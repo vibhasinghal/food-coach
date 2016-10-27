@@ -1,6 +1,6 @@
 # Food Coach sample application [![Build Status](https://travis-ci.org/watson-developer-cloud/food-coach.svg?branch=master)](https://travis-ci.org/watson-developer-cloud/food-coach)
 
-This application demonstrates how the Conversation Service can be adapted to use Tone Analyzer's tone along with intents and entities in a simple chat interface.
+This application demonstrates how the Conversation Service can be adapted to use Tone Analyzer's tone along with intents and entities in a simple chat interface. Additionally, it also shows how personality, and expressive text to speech can be integrated into Watson Conversation Service. You can refer to the [following deck](documents/watson_conversations_with_tone_personality.pdf] for background on how you can use various Watson services to provide more "natural" conversation experience to your users. 
 
 ![Demo GIF](readme_images/demo.gif?raw=true)
 
@@ -88,6 +88,59 @@ If you want to experiment with the application or use it as a basis for building
    cf create-service-key tone-analyzer-food-coach tone-analyzer-food-coach-key
    ```
 
+## Setting up the Personality Insights service
+
+1. Create an instance of the Personality Insights service in the IBM cloud:
+
+   ```bash
+   cf create-service personality-insights <service_plan> <service_instance_name>
+   ```
+   ```<service_plan>``` options include standard and premium.  Please note that either of these options will incur a cost.
+
+   For example:
+
+   ```bash
+   cf create-service personality-insights standard personality-insights-food-coach
+   ```
+
+1. Create a service key:
+
+   ```bash
+   cf create-service-key <service_instance> <service_key>
+   ```
+
+   For example:
+
+   ```bash
+   cf create-service-key personality-insights-food-coach personality-insights-food-coach-key
+
+## Setting up the Text to Speech service
+
+1. Create an instance of the Text to Speech service in the IBM cloud:
+
+   ```bash
+   cf create-service text_to_speech <service_plan> <service_instance_name>
+   ```
+   ```<service_plan>``` options include standard and premium.  Please note that either of these options will incur a cost.
+
+   For example:
+
+   ```bash
+   cf create-service text_to_speech standard text-to-speech-food-coach
+   ```
+
+1. Create a service key:
+
+   ```bash
+   cf create-service-key <service_instance> <service_key>
+   ```
+
+   For example:
+
+   ```bash
+   cf create-service-key text-to-speech-food-coach text-to-speech-food-coach-key
+   ```
+
 ### Importing the Conversation workspace
 
 1. In your browser, navigate to your [Bluemix console](https://console.ng.bluemix.net).
@@ -154,8 +207,23 @@ Do the same for the Tone Analyzer service, and paste the values into the `TONE_A
    TONE_ANALYZER_USERNAME=mhl715fg-y6h5-2113-6540-ytr78nhs8u64
    TONE_ANALYZER_PASSWORD=124GHaq31M9l
    ```
+   
+Do the same for the Personality Insights service, and paste the values into the `PERSONALITY_INSIGHTS_PASSWORD` and `PERSONALITY_INSIGHTS_USERNAME` variables in the `.env` file
+   ```
+   PERSONALITY_INSIGHTS_USERNAME=mhl715fg-y6h5-2113-6540-ytr78nhs8u64
+   PERSONALITY_INSIGHTS_PASSWORD=124GHaq31M9l
+   ```
 
-   Leave the `.env` file open in your text editor.
+Do the same for the Text to Speech service, and paste the values into the `TEXT_TO_SPEECH_PASSWORD` and `TEXT_TO_SPEECH_USERNAME` variables in the `.env` file
+   ```
+   TEXT_TO_SPEECH_USERNAME=mhl715fg-y6h5-2113-6540-ytr78nhs8u64
+   TEXT_TO_SPEECH_PASSWORD=124GHaq31M9l
+   ```
+
+You also need to add your Twitter Key and Access tokens. These include following properties: `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, `TWITTER_ACCESS_TOKEN_KEY` and `TWITTER_ACCESS_TOKEN_SECRET`. To get these properties, you would need to sign up as a Twitter developer, and register an app. [Follow this link to do the same](https://apps.twitter.com/app/new).
+
+
+ Leave the `.env` file open in your text editor.
 
 1. In your Bluemix console, open the Conversation service instance where you imported the workspace.
 
