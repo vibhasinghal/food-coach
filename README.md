@@ -7,7 +7,9 @@ This application demonstrates how the Conversation Service can be adapted to use
 Demo: http://food-coach-with-addons.mybluemix.net/
 
 For more information on the Conversation Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/doc/conversation/overview.shtml).
-For more information on the Tone Analyzer Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/tone-analyzer.html).
+For more information on the Tone Analyzer Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/tone-analyzer.html). 
+For more information on the Personality Insights Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/personality-insights.html). 
+For more information on the Text to Speech Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/text-to-speech.html). 
 
 # Deploying the application
 
