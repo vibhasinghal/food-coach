@@ -242,9 +242,7 @@ You also need to add your Twitter Key and Access tokens. These include following
 
 1. Click the ![Copy](readme_images/copy_icon.png) icon next to the workspace ID to copy the workspace ID to the clipboard.
 
-1. Back on your local system, paste the workspace ID into the WORKSPACE_ID variable in the `.env` file you previously created. At this point, your `.env` file should look like the following:
-
-   ![Screen capture of env file](readme_images/env_file_example.png)
+1. Back on your local system, paste the workspace ID into the WORKSPACE_ID variable in the `.env` file you previously created. 
 
 Save and close the file.
 
