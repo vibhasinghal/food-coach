@@ -1,6 +1,6 @@
 # Food Coach sample application With Addons
 
-This application demonstrates how the Conversation Service can be adapted to use Tone Analyzer's tone along with intents and entities in a simple chat interface. Additionally, it also shows how personality, and expressive text to speech can be integrated into Watson Conversation Service. You can refer to the [following deck](documents/watson_conversations_with_tone_personality.pdf] for background on how you can use various Watson services to provide more "natural" conversation experience to your users. 
+This application demonstrates how the Conversation Service can be adapted to use Tone Analyzer's tone along with intents and entities in a simple chat interface. Additionally, it also shows how personality, and expressive text to speech can be integrated into Watson Conversation Service. You can refer to the [following deck](documents/watson_conversations_with_tone_personality.pdf) for background on how you can use various Watson services to provide more "natural" conversation experience to your users. 
 
 ![Demo GIF](readme_images/demo.gif?raw=true)
 
