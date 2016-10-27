@@ -1,10 +1,10 @@
-# Food Coach sample application [![Build Status](https://travis-ci.org/watson-developer-cloud/food-coach.svg?branch=master)](https://travis-ci.org/watson-developer-cloud/food-coach)
+# Food Coach sample application With Addons
 
 This application demonstrates how the Conversation Service can be adapted to use Tone Analyzer's tone along with intents and entities in a simple chat interface. Additionally, it also shows how personality, and expressive text to speech can be integrated into Watson Conversation Service. You can refer to the [following deck](documents/watson_conversations_with_tone_personality.pdf] for background on how you can use various Watson services to provide more "natural" conversation experience to your users. 
 
 ![Demo GIF](readme_images/demo.gif?raw=true)
 
-Demo: http://food-coach.mybluemix.net/
+Demo: http://food-coach-with-addons.mybluemix.net/
 
 For more information on the Conversation Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/doc/conversation/overview.shtml).
 For more information on the Tone Analyzer Service, see the [detailed documentation](http://www.ibm.com/watson/developercloud/tone-analyzer.html).
@@ -113,6 +113,7 @@ If you want to experiment with the application or use it as a basis for building
 
    ```bash
    cf create-service-key personality-insights-food-coach personality-insights-food-coach-key
+   ```
 
 ## Setting up the Text to Speech service
 
@@ -140,6 +141,10 @@ If you want to experiment with the application or use it as a basis for building
    ```bash
    cf create-service-key text-to-speech-food-coach text-to-speech-food-coach-key
    ```
+
+## Setting up Twitter App
+
+[Follow instructions here](https://apps.twitter.com/app/new)
 
 ### Importing the Conversation workspace
 
@@ -267,7 +272,7 @@ If you want to subsequently deploy your local version of the application to the 
 
    * In the `services` section, specify the name of the Conversation service instance you created for the demo application. If you do not remember the service name, use the `cf services` command to list all services you have created.
 
-   * In the `env` section, add the `WORKSPACE_ID` environment variable, specifying the value from the `.env` file.
+   * In the `env` section, add the `WORKSPACE_ID` and twitter credential environment variable, specifying the value from the `.env` file.
 
    The following example shows a modified `manifest.yml` file:   
 
@@ -280,8 +285,14 @@ If you want to subsequently deploy your local version of the application to the 
      tone-analyzer-food-coach:
        label: tone_analyzer
        plan: standard
+     personality-insights-service-standard:
+       label: personality-insights
+       plan: standard
+     text-to-speech-service:
+       label: text_to_speech
+       plan: standard
    applications:
-   - name: conversation-food-coach-demo
+   - name: conversation-food-coach-demo-with-addons
      command: npm start
      path: .
      memory: 256M
@@ -289,9 +300,14 @@ If you want to subsequently deploy your local version of the application to the 
      services:
      - conversation-food-coach
      - tone-analyzer-food-coach
+     - personality-insights-service-standard
+     - text-to-speech-service
      env:
-       NPM_CONFIG_PRODUCTION: false
-       WORKSPACE_ID: fdeab5e4-0ebe-4183-8d10-6e5557a6d842
+      WOKSPACE_ID: xxx
+      TWITTER_CONSUMER_KEY=xxx
+      TWITTER_CONSUMER_SECRET=xxx
+      TWITTER_ACCESS_TOKEN_KEY=xxx
+      TWITTER_ACCESS_TOKEN_SECRET=xxx
     ```
 
 1. Save and close the `manifest.yml` file.
