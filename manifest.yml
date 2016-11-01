@@ -9,8 +9,8 @@ declared-services:
   personality-insights-service-standard:
    label: personality-insights
    plan: standard
-  speech-to-text-service:
-    label: speech_to_text
+  text-to-speech-service:
+    label: text_to_speech
     plan: standard
 applications:
 - name: food-coach-with-addons
@@ -22,7 +22,12 @@ applications:
   - conversation-service
   - tone-analyzer-standard
   - personality-insights-service-standard
-  - speech-to-text-service
+  - text-to-speech-service
   env:
     NPM_CONFIG_PRODUCTION: false
+    WOKSPACE_ID: xxx
+    TWITTER_CONSUMER_KEY=xxx
+    TWITTER_CONSUMER_SECRET=xxx
+    TWITTER_ACCESS_TOKEN_KEY=xxx
+    TWITTER_ACCESS_TOKEN_SECRET=xxx
 
