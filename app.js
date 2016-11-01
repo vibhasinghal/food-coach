@@ -188,7 +188,7 @@ function invokePersonalizedConversation(conversationRequestPayload, res) {
         conversationRequestPayload.context.getPersonality = "false";
         // Add personality to the user object of the Watson Conversation context object, if the user has provided a twitter handle
         // and there isn't yet a personality object in the user object
-          twitterHelper.getTweetsAsync({screen_name: conversationRequestPayload.input.text, count: 20}) 
+          twitterHelper.getTweetsAsync({screen_name: conversationRequestPayload.input.text, count: 200}) 
           .then( (tweets) => {
               personalityInsights.profile(
                   {'contentItems': twitterHelper.getContentItems(tweets)},

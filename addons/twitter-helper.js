@@ -19,7 +19,6 @@ var twitter = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
  
-var params = {screen_name: 'adele', count: 2};
 
 /**
  * Public functions for this module
@@ -50,7 +49,7 @@ function getContentItems(tweets){
     if(englishAndNoRetweet(tweets[i])){
       contentItems = contentItems.concat(toContentItem(tweets[i]));
     }
-  }
+  } 
   return contentItems;
 }
 
